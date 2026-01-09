@@ -116,7 +116,7 @@ export default function Home() {
   <div className="p-8 border rounded-lg text-center">
     <h3 className="font-semibold text-lg mb-3">Strategic Thinking</h3>
     <p className="text-gray-600 text-sm">
-      Every recommendation is driven by strategy, not guesswork — ensuring your
+      Every recommendation is driven by strategy, not guesswork, ensuring your
       communication aligns with long-term brand positioning.
     </p>
   </div>
@@ -132,7 +132,7 @@ export default function Home() {
   <div className="p-8 border rounded-lg text-center">
     <h3 className="font-semibold text-lg mb-3">Personalized Approach</h3>
     <p className="text-gray-600 text-sm">
-      No generic solutions — each engagement is tailored to your unique goals,
+      No generic solutions, each engagement is tailored to your unique goals,
       challenges, and brand identity.
     </p>
   </div>

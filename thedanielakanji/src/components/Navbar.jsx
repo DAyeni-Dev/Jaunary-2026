@@ -8,7 +8,7 @@ export default function Navbar() {
           Daniel Akanji
         </Link>
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-6 gap-15">
           <Link to="/about" className="text-white hover:opacity-80">
             About
           </Link>
