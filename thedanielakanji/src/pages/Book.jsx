@@ -132,7 +132,7 @@ export default function Book() {
               immediately.
             </p>
 
-            <div className="w-full h-[500px] border rounded-lg overflow-hidden">
+            <div className="w-full h-125 border rounded-lg overflow-hidden">
               <iframe
                 src="https://calendly.com/oluwadamilolaayeni321/30min"
                 width="100%"

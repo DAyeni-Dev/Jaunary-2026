@@ -27,11 +27,8 @@ export default function Home() {
           <div className="mt-10 flex space-x-6">
             <a
               href="/about"
-              className="border px-8 py-4 rounded-md transition"
-              style={{
-                borderColor: "#FF9A4A",
-                color: "#FF9A4A",
-              }}
+              className="border px-8 py-4 rounded-md  text-[#FF9A4A] bg-[#132347] hover:opacity-40 transition"
+              
             >
               Know More
             </a>
