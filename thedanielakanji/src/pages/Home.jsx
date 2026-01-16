@@ -17,7 +17,7 @@ export default function Home() {
         className="min-h-screen relative overflow-hidden flex items-center"
         style={{ backgroundColor: "#F5F5F5", color: "#000000" }}
       >
-        <div className="max-w-7xl mx-auto px-8 py-20">
+        <div className="max-w-7xl mx-auto px-8 py-16">
           <h1
             className="text-4xl md:text-5xl font-bold max-w-3xl leading-tight"
             style={{ color: "#FF9A4A" }}
@@ -33,18 +33,26 @@ export default function Home() {
             communicate with clarity and protect their brand image.
           </p>
 
-          <div className="mt-10 flex space-x-6">
+          <div className="mt-10 flex flex-wrap gap-4">
+            <a
+              href="/book"
+              className="px-8 py-4 rounded-md font-medium"
+              style={{ backgroundColor: "#FF9A4A", color: "#132347" }}
+            >
+              Book a Consultation
+            </a>
             <a
               href="/about"
-              className="border px-8 py-4 rounded-md text-[#FF9A4A] bg-[#132347] hover:opacity-40 transition"
+              className="px-8 py-4 rounded-md border font-medium"
+              style={{ borderColor: "#132347", color: "#132347" }}
             >
-              Know More
+              Learn More About Daniel
             </a>
           </div>
         </div>
       </motion.section>
 
-      <motion.section {...sectionAnimation} className="py-24">
+      <motion.section {...sectionAnimation} className="py-16">
         <div className="max-w-7xl mx-auto px-8 grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2
@@ -53,12 +61,14 @@ export default function Home() {
             >
               Why Daniel Akanji Is the Right Fit for Your Brand
             </h2>
-            <p style={{ color: "#000000" }} className="leading-relaxed">
+            <p style={{ color: "#000000" }} className="leading-relaxed mb-4">
               Daniel Akanji is a seasoned Public Relations and Communications
               consultant with a deep understanding of brand perception,
-              stakeholder engagement, and reputation management. He works closely
-              with business leaders and public personalities to craft narratives
-              that inspire trust and authority.
+              stakeholder engagement, and reputation management.
+            </p>
+            <p style={{ color: "#000000" }} className="leading-relaxed">
+              He works closely with business leaders and public personalities
+              to craft narratives that inspire trust and authority.
             </p>
           </div>
 
@@ -72,10 +82,14 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section {...sectionAnimation} className="py-24">
+      <motion.section
+        {...sectionAnimation}
+        className="py-16"
+        style={{ backgroundColor: "#F5F5F5" }}
+      >
         <div className="max-w-7xl mx-auto px-8">
           <h2
-            className="text-3xl font-bold mb-12 text-center"
+            className="text-3xl font-bold mb-8 text-center"
             style={{ color: "#FF9A4A" }}
           >
             Services
@@ -123,10 +137,10 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section {...sectionAnimation} className="py-24">
+      <motion.section {...sectionAnimation} className="py-16">
         <div className="max-w-7xl mx-auto px-8">
           <h2
-            className="text-3xl font-bold mb-12 text-center"
+            className="text-3xl font-bold mb-8 text-center"
             style={{ color: "#FF9A4A" }}
           >
             What Clients Say

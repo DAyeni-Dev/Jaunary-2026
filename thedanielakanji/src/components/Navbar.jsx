@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/hero-bg.jpeg";
 
 export default function Navbar() {
@@ -7,10 +7,19 @@ export default function Navbar() {
 
   const closeMenu = () => setIsOpen(false);
 
+  const desktopLinkClass = ({ isActive }) =>
+    `px-3 py-2 rounded-md transition ${
+      isActive ? "text-[#FF9A4A]" : "text-white hover:text-[#FF9A4A]"
+    }`;
+
+  const mobileLinkClass = ({ isActive }) =>
+    `px-4 py-3 rounded-md transition text-center ${
+      isActive ? "bg-[#FF9A4A] text-[#132347]" : "text-white active:bg-[#FF9A4A] focus:bg-[#FF9A4A]"
+    }`;
+
   return (
     <header className="bg-[#132347]">
       <nav className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
-        {/* LOGO */}
         <div className="flex items-center space-x-3">
           <Link to="/" onClick={closeMenu}>
             <img
@@ -22,41 +31,45 @@ export default function Navbar() {
           <Link
             to="/"
             onClick={closeMenu}
-            className="text-white hover:bg-[#FF9A4A] px-3 py-2 rounded-md transition
-             active:bg-[#FF9A4A] "
+            className="text-white hover:bg-[#FF9A4A] px-3 py-2 rounded-md transition active:bg-[#FF9A4A]"
           >
             Daniel Akanji
           </Link>
         </div>
 
-        
         <div className="hidden md:flex items-center space-x-6">
-          <Link
-            to="/about"
-            className="text-white hover:text-[#FF9A4A] px-3 py-2 rounded-md transition"
-          >
+          <NavLink to="/" className={desktopLinkClass}>
+            Home
+          </NavLink>
+
+          <NavLink to="/about" className={desktopLinkClass}>
             About
-          </Link>
+          </NavLink>
 
-          <Link
-            to="/contact"
-            className="text-white hover:text-[#FF9A4A] px-3 py-2 rounded-md transition"
-          >
+          <NavLink to="/contact" className={desktopLinkClass}>
             Contact
-          </Link>
+          </NavLink>
 
-          <Link
+          <NavLink
             to="/book"
-            className="px-6 py-2 rounded-md font-medium bg-[#FF9A4A] text-[#132347] hover:opacity-40 transition"
+            className={({ isActive }) =>
+              `px-6 py-2 rounded-md font-medium transition ${
+                isActive
+                  ? "bg-[#FF9A4A] text-[#132347]"
+                  : "bg-[#FF9A4A] text-[#132347] hover:opacity-40"
+              }`
+            }
           >
             Book Consultation
-          </Link>
+          </NavLink>
         </div>
 
         <button
           className="md:hidden text-white"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
+          aria-expanded={isOpen}
+          aria-controls="mobile-menu"
         >
           <svg
             className="w-7 h-7"
@@ -74,39 +87,42 @@ export default function Navbar() {
         </button>
       </nav>
 
-      
       <div
+        id="mobile-menu"
         className={`md:hidden bg-[#132347] px-8 pb-6 transition-all duration-300 ease-in-out ${
           isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
         }`}
       >
         <div className="flex flex-col space-y-4 mt-4">
-        
-          <Link
-            to="/about"
-            onClick={closeMenu}
-            className="
-              text-white px-4 py-3 rounded-md transition  active:bg-[#FF9A4A] focus:bg-[#FF9A4A] text-center"
-          >
+          <NavLink to="/" onClick={closeMenu} className={mobileLinkClass}>
+            Home
+          </NavLink>
+
+          <NavLink to="/about" onClick={closeMenu} className={mobileLinkClass}>
             About
-          </Link>
+          </NavLink>
 
-
-          <Link
+          <NavLink
             to="/contact"
             onClick={closeMenu}
-            className="text-white px-4 py-3 rounded-md transition  active:bg-[#FF9A4A] focus:bg-[#FF9A4A] text-center"
+            className={mobileLinkClass}
           >
             Contact
-          </Link>
+          </NavLink>
 
-          <Link
+          <NavLink
             to="/book"
             onClick={closeMenu}
-            className="px-6 py-3 rounded-md font-medium bg-[#FF9A4A] text-[#132347] hover:opacity-40 transition text-center"
+            className={({ isActive }) =>
+              `px-6 py-3 rounded-md font-medium transition text-center ${
+                isActive
+                  ? "bg-[#FF9A4A] text-[#132347]"
+                  : "bg-[#FF9A4A] text-[#132347] hover:opacity-40"
+              }`
+            }
           >
             Book Consultation
-          </Link>
+          </NavLink>
         </div>
       </div>
     </header>

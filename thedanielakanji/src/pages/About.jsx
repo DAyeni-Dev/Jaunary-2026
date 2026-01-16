@@ -35,6 +35,11 @@ export default function About() {
                 A detail-oriented communications professional driven by excellence,
                 integrity, and purposeful impact.
               </p>
+              <ul className="mt-4 space-y-2 text-lg" style={{ color: "#FFFFFF" }}>
+  <li>Public Relations & Communications Professional</li>
+  <li>Experience across government, corporate, and media spaces</li>
+  <li>Focused on reputation, strategy, and storytelling</li>
+</ul>
             </div>
           </motion.section>
         </div>
@@ -87,14 +92,44 @@ export default function About() {
           <h2 className="text-3xl font-semibold mb-6" style={{ color: "#FF9A4A" }}>
             A Communicator Rooted in Excellence
           </h2>
-          <p style={{ color: "#0E1D34" }} className="leading-relaxed">
-            Daniel Akanji is a passionate and highly detail-oriented Public
-            Relations and Communications professional. Known for his strong work
-            ethic and commitment to excellence, Daniel approaches every task
-            with intentionality, precision, and a deep sense of responsibility.
-            His work is guided by the belief that communication should be clear,
-            strategic, and impactful.
-          </p>
+         <p style={{ color: "#0E1D34" }} className="leading-relaxed mb-4">
+  Daniel Akanji is a passionate and highly detail-oriented Public
+  Relations and Communications professional. Known for his strong work
+  ethic and commitment to excellence, Daniel approaches every task
+  with intentionality, precision, and a deep sense of responsibility.
+</p>
+<p style={{ color: "#0E1D34" }} className="leading-relaxed">
+  His work is guided by the belief that communication should be clear,
+  strategic, and impactful.
+</p>
+        </div>
+      </motion.section>
+
+      <motion.section {...sectionAnimation} className="py-20 bg-white">
+        <div className="max-w-5xl mx-auto px-8">
+          <h2 className="text-3xl font-semibold mb-6" style={{ color: "#FF9A4A" }}>
+            What I Do
+          </h2>
+          <div className="grid gap-6 md:grid-cols-3" style={{ color: "#0E1D34" }}>
+            <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
+              <h3 className="font-semibold mb-2">Media & PR Strategy</h3>
+              <p className="text-sm">
+                Designing communication strategies that align with brand identity and goals.
+              </p>
+            </div>
+            <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
+              <h3 className="font-semibold mb-2">Event Communications</h3>
+              <p className="text-sm">
+                Managing messaging and visibility for conferences, concerts, and campaigns.
+              </p>
+            </div>
+            <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
+              <h3 className="font-semibold mb-2">Reputation Management</h3>
+              <p className="text-sm">
+                Supporting leaders and institutions with thoughtful, value-driven communication.
+              </p>
+            </div>
+          </div>
         </div>
       </motion.section>
 
@@ -104,26 +139,35 @@ export default function About() {
             Government & Corporate Experience
           </h2>
 
-          <div className="space-y-8" style={{ color: "#0E1D34" }}>
-            <div>
-              <h3 className="font-semibold text-lg">
-                Personal Assistant – Office of the Specail Adviser to the Governor
-              </h3>
-              <p>
-                Daniel served as Personal Assistant to Hon. Shete, Special Adviser
-                to Governor Seyi Makinde on Housing and Urban Affairs.
-              </p>
-            </div>
+          <div className="space-y-6" style={{ color: "#0E1D34" }}>
+  <div className="p-4 rounded-lg" style={{ backgroundColor: "#F5F5F5" }}>
+    <h3 className="font-semibold text-lg">
+      Personal Assistant – Office of the Special Adviser to the Governor
+    </h3>
+    <p className="text-sm text-gray-700">Oyo State • Housing and Urban Affairs</p>
+    <p className="mt-2">
+      Daniel served as Personal Assistant to Hon. Shete, Special Adviser
+                to Governor Seyi Makinde on Housing and Urban Affairs. In this
+                role, he supported high-level administrative operations,
+                stakeholder engagement, and strategic communication within a
+                government environment.
 
-            <div>
-              <h3 className="font-semibold text-lg">
-                Lagos State Internal Revenue Service (LIRS)
-              </h3>
-              <p>
-                Daniel has also worked with the Lagos State Tax Corporation.
-              </p>
-            </div>
-          </div>
+    </p>
+  </div>
+
+  <div className="p-4 rounded-lg" style={{ backgroundColor: "#F5F5F5" }}>
+    <h3 className="font-semibold text-lg">
+      Lagos State Internal Revenue Service (LIRS)
+    </h3>
+    <p className="text-sm text-gray-700">Lagos State Tax Corporation</p>
+    <p className="mt-2">
+      Daniel has also worked with the Lagos State Tax Corporation,
+                contributing to structured public communication and institutional
+                engagement within a large government organization.
+
+    </p>
+  </div>
+</div>
         </div>
       </motion.section>
 
@@ -151,7 +195,10 @@ export default function About() {
           </h2>
           <p style={{ color: "#0E1D34" }} className="leading-relaxed">
             Daniel has worked closely with kings, traditional rulers, and other
-            respected dignitaries across Ibadan.
+            respected dignitaries across Ibadan. His professionalism, discretion,
+            and cultural intelligence have earned him trust in high-level and
+            sensitive engagements.
+
           </p>
         </div>
       </motion.section>
@@ -162,8 +209,11 @@ export default function About() {
             Service Beyond Professional Work
           </h2>
           <p style={{ color: "#0E1D34" }} className="leading-relaxed">
-            Beyond corporate and government work, Daniel actively volunteers.
-          </p>
+            Beyond corporate and government work, Daniel actively volunteers for
+            rural and urban outreach programs as well as mission work. His
+            commitment to service reflects his belief that true impact goes
+            beyond visibility and recognition.
+            </p>
         </div>
       </motion.section>
 
@@ -188,6 +238,31 @@ export default function About() {
           </ul>
         </div>
       </motion.section>
+
+      <motion.section
+  {...sectionAnimation}
+  className="py-16"
+  style={{ backgroundColor: "#FFFFFF" }}
+>
+  <div className="max-w-5xl mx-auto px-8 text-center">
+    <h2 className="text-3xl font-semibold mb-4" style={{ color: "#FF9A4A" }}>
+      Ready to Work Together?
+    </h2>
+    <p className="mb-6" style={{ color: "#0E1D34" }}>
+      If you are a brand, leader, or organization looking for
+      thoughtful communication support, Daniel is available for
+      collaborations, consulting, and long-term engagements.
+    </p>
+    <a
+      href="/contact"
+      className="inline-block px-8 py-3 rounded-md font-semibold"
+      style={{ backgroundColor: "#FF9A4A", color: "#0D1932" }}
+    >
+      Contact Daniel
+    </a>
+  </div>
+</motion.section>
+
     </main>
   );
 }

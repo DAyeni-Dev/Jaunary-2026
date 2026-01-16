@@ -92,8 +92,21 @@ export default function Book() {
 
   return (
     <main className="bg-white py-24">
-      <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16">
-        
+      <div className="max-w-6xl mx-auto px-6">
+        <div
+          className="mb-8 px-4 py-3 rounded-md border text-sm"
+          style={{ borderColor: "#FF9A4A", backgroundColor: "#FFF5EC", color: "#132347" }}
+        >
+          <span className="font-semibold" style={{ color: "#FF9A4A" }}>
+            How to book:
+          </span>{" "}
+          <span>
+            Choose the option that works best for you: book directly via Calendly
+            or send a request using the form.
+          </span>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-12 md:gap-16">
         <motion.section {...sectionAnimation}>
           <h1 className="text-4xl font-bold mb-6 text-[#FF9A4A]">
             Book a Consultation
@@ -153,7 +166,7 @@ export default function Book() {
 
         <motion.section
           {...sectionAnimation}
-          className="bg-[#FFFFFF] border border-[#132347]/10 p-10 rounded-xl shadow-sm"
+          className="bg-[#FFFFFF] border border-[#132347]/10 p-8 md:p-10 rounded-xl shadow-sm"
         >
           {!success ? (
             <>
@@ -200,6 +213,9 @@ export default function Book() {
                     <option>Crisis Communications</option>
                     <option>Media Relations</option>
                   </select>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Select the main area where you’d like communication support.
+                  </p>
                 </div>
 
                 <div>
@@ -213,6 +229,9 @@ export default function Book() {
                     onChange={handleChange}
                     className="w-full border rounded-md px-4 py-3"
                   />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Share a short overview of your situation or questions.
+                  </p>
                 </div>
 
                 <button
@@ -240,11 +259,13 @@ export default function Book() {
 
               <p className="text-gray-600 max-w-sm">
                 Thank you for reaching out. Your consultation request has been
-                received, and you’ll be contacted shortly.
+                received. You’ll usually get a response within 24–48 hours on
+                business days.
               </p>
             </div>
           )}
         </motion.section>
+        </div>
       </div>
     </main>
   );
