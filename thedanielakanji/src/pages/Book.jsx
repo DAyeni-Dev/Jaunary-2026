@@ -13,6 +13,8 @@ export default function Book() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    category: "",
+    categoryOther: "",
     service: "",
     message: "",
   });
@@ -27,6 +29,8 @@ export default function Book() {
     formData.name.trim() &&
     formData.email.trim() &&
     emailRegex.test(formData.email) &&
+    formData.category.trim() &&
+    (formData.category !== "Other" || formData.categoryOther.trim()) &&
     formData.service.trim() &&
     formData.message.trim();
 
@@ -43,6 +47,10 @@ export default function Book() {
     } else if (!emailRegex.test(formData.email)) {
       newErrors.email = "Enter a valid email address";
     }
+    if (!formData.category.trim())
+      newErrors.category = "Please select a category";
+    if (formData.category === "Other" && !formData.categoryOther.trim())
+      newErrors.categoryOther = "Please specify your category";
     if (!formData.service.trim())
       newErrors.service = "Please select a service";
     if (!formData.message.trim())
@@ -82,6 +90,8 @@ export default function Book() {
         setFormData({
           name: "",
           email: "",
+          category: "",
+          categoryOther: "",
           service: "",
           message: "",
         });
@@ -128,7 +138,7 @@ export default function Book() {
             <li>
               <span className="font-semibold">Who it’s for</span>
               <p className="text-gray-600">
-                Business owners, corporate professionals, and public figures.
+                Business owners,Individuals, corporate professionals, and public figures.
               </p>
             </li>
             <li>
@@ -197,6 +207,49 @@ export default function Book() {
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
+                    You are enquiring as
+                  </label>
+                  <select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                    className="w-full border rounded-md px-4 py-3"
+                  >
+                    <option value="">Select an option</option>
+                    <option>Brand owner</option>
+                    <option>Individual</option>
+                    <option>Corporate organisation</option>
+                    <option>NGO</option>
+                    <option>Other</option>
+                  </select>
+                  {errors.category && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.category}
+                    </p>
+                  )}
+                  {formData.category === "Other" && (
+                    <div className="mt-3">
+                      <label className="block text-sm font-medium mb-2">
+                        Please specify
+                      </label>
+                      <input
+                        type="text"
+                        name="categoryOther"
+                        value={formData.categoryOther}
+                        onChange={handleChange}
+                        className="w-full border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF9A4A]"
+                      />
+                      {errors.categoryOther && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.categoryOther}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">
                     Service of Interest
                   </label>
                   <select
@@ -233,6 +286,11 @@ export default function Book() {
                     Share a short overview of your situation or questions.
                   </p>
                 </div>
+
+                <p className="text-xs text-gray-400">
+                  Your details are kept confidential and used only to respond to
+                  your request.
+                </p>
 
                 <button
                   type="submit"

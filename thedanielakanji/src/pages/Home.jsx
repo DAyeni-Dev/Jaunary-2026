@@ -1,4 +1,6 @@
-import { motion } from "framer-motion"; 
+import { useState } from "react";
+import { motion } from "framer-motion";
+import ServiceCard from "../components/ServiceCard"; 
 import danielImage from "../assets/The-daniel-Akanji.jpeg";
 
 const sectionAnimation = {
@@ -9,6 +11,31 @@ const sectionAnimation = {
 };
 
 export default function Home() {
+  const [openFaqIndex, setOpenFaqIndex] = useState(null);
+
+  const faqs = [
+    {
+      question: "Who is this service best suited for?",
+      answer:
+        "Business owners, corporate professionals, public figures, and anyone who cares about how they are perceived and communicated with in public.",
+    },
+    {
+      question: "Do you work with organizations or only individuals?",
+      answer:
+        "Daniel supports both individuals and organizations, tailoring each engagement to the size, structure, and communication needs of the client.",
+    },
+    {
+      question: "What happens after I send a booking request?",
+      answer:
+        "You’ll receive a follow-up email with next steps and, where relevant, a proposed time and structure for your consultation session.",
+    },
+    {
+      question: "Can engagements be fully remote?",
+      answer:
+        "Yes. Consultations and strategy sessions can be held virtually, making it easy to work together regardless of location and time zone.",
+    },
+  ];
+
   return (
     <main style={{ backgroundColor: "#FFFFFF" }}>
       
@@ -122,16 +149,12 @@ export default function Home() {
                 text: "Building and managing relationships with the media to ensure accurate, strategic, and favorable brand coverage.",
               },
             ].map((service, index) => (
-              <div
+              <ServiceCard
                 key={index}
-                className="p-8 rounded-lg shadow-sm"
-                style={{ backgroundColor: "#F5F5F5", color: "#000000" }}
-              >
-                <h3 className="font-semibold text-lg mb-3" style={{ color: "#FF9A4A" }}>
-                  {service.title}
-                </h3>
-                <p className="text-sm">{service.text}</p>
-              </div>
+                index={index}
+                title={service.title}
+                text={service.text}
+              />
             ))}
           </div>
         </div>
@@ -149,11 +172,11 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-8">
             {[
               {
-                name: "Peculiar Views",
+                name: "PeculiarViews",
                 text: "Daniel’s strategic approach completely transformed how our brand communicates with the public.",
               },
               {
-                name: "Tobzy Shot it",
+                name: "The TSI Company",
                 text: "Professional, insightful, and deeply intentional. Highly recommended.",
               },
             ].map((testimonial, index) => (
@@ -168,6 +191,160 @@ export default function Home() {
                 </span>
               </div>
             ))}
+          </div>
+        </div>
+      </motion.section>
+
+      <motion.section
+        {...sectionAnimation}
+        className="py-16"
+        style={{ backgroundColor: "#F5F5F5" }}
+      >
+        <div className="max-w-7xl mx-auto px-8">
+          <h2
+            className="text-3xl font-bold mb-8 text-center"
+            style={{ color: "#FF9A4A" }}
+          >
+            Case Studies
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="p-8 rounded-lg shadow-sm bg-white">
+              <h3 className="font-semibold text-lg mb-2" style={{ color: "#FF9A4A" }}>
+                Strengthening a Growing Brand’s Public Image
+              </h3>
+              <p className="text-sm text-gray-700 mb-2">
+                A creative brand needed to clarify its messaging and improve how it
+                showed up publicly.
+              </p>
+              <p className="text-sm text-gray-700">
+                Through a refreshed PR strategy and consistent communication support,
+                the brand improved audience trust and engagement across channels.
+              </p>
+              <p className="font-semibold text-lg mb-2" style={{ color: "#FF9A4A" }}>-Regent Villa</p>
+            </div>
+
+            <div className="p-8 rounded-lg shadow-sm bg-white">
+              <h3 className="font-semibold text-lg mb-2" style={{ color: "#FF9A4A" }}>
+                Guiding a Professional Through Reputation Management
+              </h3>
+              <p className="text-sm text-gray-700 mb-2">
+                A corporate professional needed support navigating a sensitive
+                communication situation.
+              </p>
+              <p className="text-sm text-gray-700">
+                With a structured communication plan and careful messaging, they were
+                able to maintain credibility and move forward confidently.
+              </p>
+                <p className="font-semibold text-lg mb-2" style={{ color: "#FF9A4A" }}>-The Event Mistress</p>
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
+      <motion.section {...sectionAnimation} className="py-16">
+        <div className="max-w-7xl mx-auto px-8">
+          <h2
+            className="text-3xl font-bold mb-8 text-center"
+            style={{ color: "#FF9A4A" }}
+          >
+            How the Process Works
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
+              <span className="text-sm font-semibold" style={{ color: "#FF9A4A" }}>
+                Step 1
+              </span>
+              <h3 className="font-semibold text-lg mt-2 mb-2">
+                Book a consultation
+              </h3>
+              <p className="text-sm text-gray-700">
+                Share your goals, current challenges, and where you need the most PR and
+                communication support.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
+              <span className="text-sm font-semibold" style={{ color: "#FF9A4A" }}>
+                Step 2
+              </span>
+              <h3 className="font-semibold text-lg mt-2 mb-2">
+                Receive a tailored plan
+              </h3>
+              <p className="text-sm text-gray-700">
+                Daniel develops a clear approach aligned with your brand, audience,
+                and reputation goals.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
+              <span className="text-sm font-semibold" style={{ color: "#FF9A4A" }}>
+                Step 3
+              </span>
+              <h3 className="font-semibold text-lg mt-2 mb-2">
+                Implement and refine
+              </h3>
+              <p className="text-sm text-gray-700">
+                Work together to roll out the strategy, refine messaging, and monitor
+                results over time.
+              </p>
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
+      <motion.section
+        {...sectionAnimation}
+        className="py-16"
+        style={{ backgroundColor: "#F5F5F5" }}
+      >
+        <div className="max-w-7xl mx-auto px-8">
+          <h2
+            className="text-3xl font-bold mb-8 text-center"
+            style={{ color: "#FF9A4A" }}
+          >
+            Frequently Asked Questions
+          </h2>
+
+          <div className="space-y-4 max-w-3xl mx-auto">
+            {faqs.map((faq, index) => {
+              const isOpen = openFaqIndex === index;
+              return (
+                <div
+                  key={index}
+                  className="border border-gray-200 rounded-lg bg-white"
+                >
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setOpenFaqIndex(isOpen ? null : index)
+                    }
+                    className="w-full flex items-center justify-between px-4 py-3 text-left"
+                  >
+                    <span
+                      className="font-semibold text-sm md:text-base"
+                      style={{ color: "#132347" }}
+                    >
+                      {faq.question}
+                    </span>
+                    <span
+                      className="ml-4 text-xl leading-none"
+                      style={{ color: "#FF9A4A" }}
+                    >
+                      {isOpen ? "−" : "+"}
+                    </span>
+                  </button>
+                  {isOpen && (
+                    <div className="px-4 pb-4">
+                      <p className="text-sm text-gray-700">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </motion.section>

@@ -1,6 +1,11 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function Footer() {
+  const footerLinkClass = ({ isActive }) =>
+    `transition ${
+      isActive ? "text-[#FF9A4A] font-semibold" : "text-gray-300 hover:text-[#FF9A4A]"
+    }`;
+
   return (
     <footer
       className="mt-20 text-white"
@@ -13,23 +18,23 @@ function Footer() {
               Daniel Akanji
             </p>
             <p className="text-sm text-gray-300 mt-1">
-              Strategic Public Relations and Communications for brands and leaders.
+              Strategic Public Relations and Communications for brands and business owners/leaders.
             </p>
           </div>
 
           <nav className="flex flex-wrap justify-center md:justify-end gap-4 text-sm">
-            <Link to="/" className="hover:text-[#FF9A4A] transition">
+            <NavLink to="/" className={footerLinkClass}>
               Home
-            </Link>
-            <Link to="/about" className="hover:text-[#FF9A4A] transition">
+            </NavLink>
+            <NavLink to="/about" className={footerLinkClass}>
               About
-            </Link>
-            <Link to="/book" className="hover:text-[#FF9A4A] transition">
-              Book Consultation
-            </Link>
-            <Link to="/contact" className="hover:text-[#FF9A4A] transition">
+            </NavLink>
+            <NavLink to="/contact" className={footerLinkClass}>
               Contact
-            </Link>
+            </NavLink>
+            <NavLink to="/book" className={footerLinkClass}>
+              Book Consultation
+            </NavLink>
           </nav>
         </div>
 

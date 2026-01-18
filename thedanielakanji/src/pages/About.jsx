@@ -32,11 +32,10 @@ export default function About() {
                 About Daniel Akanji
               </h1>
               <p className="text-lg max-w-3xl" style={{ color: "#FFFFFF" }}>
-                A detail-oriented communications professional driven by excellence,
+                A detail-oriented Public Relations and communications professional driven by excellence,
                 integrity, and purposeful impact.
               </p>
               <ul className="mt-4 space-y-2 text-lg" style={{ color: "#FFFFFF" }}>
-  <li>Public Relations & Communications Professional</li>
   <li>Experience across government, corporate, and media spaces</li>
   <li>Focused on reputation, strategy, and storytelling</li>
 </ul>
@@ -62,7 +61,7 @@ export default function About() {
               },
               {
                 title: "Passion",
-                text: "His passion for communication translates into thoughtful strategies aligned with brand identity.",
+                text: "His passion for Public Relations and communication translates into thoughtful strategies aligned with brand identity.",
               },
               {
                 title: "Integrity",
@@ -112,7 +111,7 @@ export default function About() {
           </h2>
           <div className="grid gap-6 md:grid-cols-3" style={{ color: "#0E1D34" }}>
             <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
-              <h3 className="font-semibold mb-2">Media & PR Strategy</h3>
+              <h3 className="font-semibold mb-2">PR & Media Strategy</h3>
               <p className="text-sm">
                 Designing communication strategies that align with brand identity and goals.
               </p>
@@ -120,13 +119,13 @@ export default function About() {
             <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
               <h3 className="font-semibold mb-2">Event Communications</h3>
               <p className="text-sm">
-                Managing messaging and visibility for conferences, concerts, and campaigns.
+                Consulting, planning, managing, and visibility for conferences, concerts, and campaigns.
               </p>
             </div>
             <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
               <h3 className="font-semibold mb-2">Reputation Management</h3>
               <p className="text-sm">
-                Supporting leaders and institutions with thoughtful, value-driven communication.
+                Supporting brands, organisation, individuals and institutions with thoughtful and value-driven communication.
               </p>
             </div>
           </div>
@@ -142,28 +141,29 @@ export default function About() {
           <div className="space-y-6" style={{ color: "#0E1D34" }}>
   <div className="p-4 rounded-lg" style={{ backgroundColor: "#F5F5F5" }}>
     <h3 className="font-semibold text-lg">
-      Personal Assistant – Office of the Special Adviser to the Governor
+      Personal Assistant – Office of the Special Adviser to the Governor of Oyo State
     </h3>
-    <p className="text-sm text-gray-700">Oyo State • Housing and Urban Affairs</p>
+    <p className="text-sm text-gray-700"> Housing and Urban Development | Oyo State Housing Corporation</p>
     <p className="mt-2">
-      Daniel served as Personal Assistant to Hon. Shete, Special Adviser
-                to Governor Seyi Makinde on Housing and Urban Affairs. In this
+      Daniel served as Personal Assistant to Hon. Olakunle Akinsete, Special Adviser
+                to Governor Seyi Makinde on Housing and Urban Development. In this
                 role, he supported high-level administrative operations,
                 stakeholder engagement, and strategic communication within a
-                government environment.
+                government environment. 
 
-    </p>
+    </p >
+    <p className="mt-2">Also managed his schedule and media relations</p>
   </div>
 
   <div className="p-4 rounded-lg" style={{ backgroundColor: "#F5F5F5" }}>
     <h3 className="font-semibold text-lg">
       Lagos State Internal Revenue Service (LIRS)
     </h3>
-    <p className="text-sm text-gray-700">Lagos State Tax Corporation</p>
+    <p className="text-sm text-gray-700">Human Resource Mangaement</p>
     <p className="mt-2">
-      Daniel has also worked with the Lagos State Tax Corporation,
+      Daniel has also worked with the Lagos State Internal Revenue Service, HR Unit
                 contributing to structured public communication and institutional
-                engagement within a large government organization.
+                engagement within the employees of the organization.
 
     </p>
   </div>
@@ -174,17 +174,106 @@ export default function About() {
       <motion.section {...sectionAnimation} className="py-20">
         <div className="max-w-5xl mx-auto px-8">
           <h2 className="text-3xl font-semibold mb-10" style={{ color: "#FF9A4A" }}>
-            Events, Media & Reputation Management
+            Events & Media 
           </h2>
 
-          <ul
-            className="space-y-6 list-disc list-inside"
-            style={{ color: "#0E1D34" }}
-          >
-            <li>Member of the Planning Committee for Babatunmise Live in Concert (BLIC)</li>
-            <li>Planning Committee Member for Ibadan City Praise</li>
-            <li>PR team for Davido’s “5 Alive Tour”</li>
-          </ul>
+          <div className="grid gap-6 md:grid-cols-2" style={{ color: "#0E1D34" }}>
+            <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
+              <p className="text-xs font-semibold mb-1" style={{ color: "#FF9A4A" }}>
+                Concert & Worship Event
+              </p>
+              <h3 className="font-semibold text-sm mb-1">
+                Ibadan City Praise
+              </h3>
+              <p className="text-sm">
+                Planning committee member supporting event coordination and communications.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
+              <p className="text-xs font-semibold mb-1" style={{ color: "#FF9A4A" }}>
+                Music Tour
+              </p>
+              <h3 className="font-semibold text-sm mb-1">
+                Davido’s “5 Alive Tour”
+              </h3>
+              <p className="text-sm">
+                Part of the PR team, supporting visibility and audience engagement.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
+              <p className="text-xs font-semibold mb-1" style={{ color: "#FF9A4A" }}>
+                Expo & Conference
+              </p>
+              <h3 className="font-semibold text-sm mb-1">
+                Nigerian Photo Cinema Expo
+              </h3>
+              <p className="text-sm">
+                PR support to highlight key sessions, partners, and creative talents.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
+              <p className="text-xs font-semibold mb-1" style={{ color: "#FF9A4A" }}>
+                Conference & Gathering
+              </p>
+              <h3 className="font-semibold text-sm mb-1">
+                Ekabo Africa
+              </h3>
+              <p className="text-sm">
+                PR team member helping shape messaging and event communication.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
+              <p className="text-xs font-semibold mb-1" style={{ color: "#FF9A4A" }}>
+                Conference
+              </p>
+              <h3 className="font-semibold text-sm mb-1">
+                Unriddled Conference
+              </h3>
+              <p className="text-sm">
+                PR support to drive awareness and attendance for the conference.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
+              <p className="text-xs font-semibold mb-1" style={{ color: "#FF9A4A" }}>
+                Influencer & Cinema Campaign
+              </p>
+              <h3 className="font-semibold text-sm mb-1">
+                Filmhouse Cinema
+              </h3>
+              <p className="text-sm">
+                Influencer marketing and media amplification for cinema campaigns.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
+              <p className="text-xs font-semibold mb-1" style={{ color: "#FF9A4A" }}>
+                Government Event
+              </p>
+              <h3 className="font-semibold text-sm mb-1">
+                Oyo State Real Estate Conference
+              </h3>
+              <p className="text-sm">
+                Media team role, supporting coverage and stakeholder communication.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-lg shadow-sm" style={{ backgroundColor: "#F5F5F5" }}>
+              <p className="text-xs font-semibold mb-1" style={{ color: "#FF9A4A" }}>
+                Concert
+              </p>
+              <h3 className="font-semibold text-sm mb-1">
+                Babatunmise Live in Concert (BLIC)
+              </h3>
+              <p className="text-sm">
+                Planning committee member with focus on communications and event experience.
+              </p>
+            </div>
+          </div>
         </div>
       </motion.section>
 
@@ -195,7 +284,7 @@ export default function About() {
           </h2>
           <p style={{ color: "#0E1D34" }} className="leading-relaxed">
             Daniel has worked closely with kings, traditional rulers, and other
-            respected dignitaries across Ibadan. His professionalism, discretion,
+            respected dignitaries across Oyo State. His professionalism, discretion,
             and cultural intelligence have earned him trust in high-level and
             sensitive engagements.
 
@@ -249,9 +338,9 @@ export default function About() {
       Ready to Work Together?
     </h2>
     <p className="mb-6" style={{ color: "#0E1D34" }}>
-      If you are a brand, leader, or organization looking for
-      thoughtful communication support, Daniel is available for
-      collaborations, consulting, and long-term engagements.
+      If you are a brand owner, individual/cooperate brand, organization looking for
+      thoughtful PR and communication support, Daniel is available for consulting,
+      collaborations, and long-term engagements.
     </p>
     <a
       href="/contact"
