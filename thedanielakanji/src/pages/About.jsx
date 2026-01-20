@@ -283,7 +283,7 @@ export default function About() {
             Trusted by Leaders & Institutions
           </h2>
           <p style={{ color: "#0E1D34" }} className="leading-relaxed">
-            Daniel has worked closely with kings, traditional rulers, and other
+            Daniel has worked closely with traditional rulers, and other
             respected dignitaries across Oyo State. His professionalism, discretion,
             and cultural intelligence have earned him trust in high-level and
             sensitive engagements.
