@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 const sectionAnimation = {
@@ -9,6 +9,49 @@ const sectionAnimation = {
 };
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess(true);
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        setError(data.error || "Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      setError("Failed to connect to the server. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main
       className="min-h-screen flex flex-col items-center justify-start px-6 py-16"
@@ -19,17 +62,109 @@ export default function Contact() {
       </h1>
 
       <p className="max-w-xl text-center text-sm text-gray-200 mb-4">
-        For collaborations, consulting, speaking engagements, or media-related
-        inquiries, you can connect to Daniel through
-        any of the social platforms below.
+        For consulting, collaborations, speaking engagements, or media-related
+        inquiries, please fill out the form below or connect via social media.
       </p>
 
       <p className="max-w-xl text-center text-xs text-gray-300 mb-10">
         Daniel typically responds within 24–48 hours on business days.
       </p>
 
+      {/* Contact Form */}
+      <motion.div 
+        className="w-full max-w-xl bg-[#152a4a] p-8 rounded-lg shadow-lg mb-16"
+        {...sectionAnimation}
+      >
+        <h2 className="text-xl font-semibold mb-6 text-center">Send a Message</h2>
+        
+        {success ? (
+          <div className="text-center py-8">
+            <h3 className="text-xl font-medium text-[#FF9A4A] mb-2">Message Sent!</h3>
+            <p className="text-gray-300">Thank you for reaching out. We'll get back to you shortly.</p>
+            <button 
+              onClick={() => setSuccess(false)}
+              className="mt-4 px-6 py-2 bg-transparent border border-[#FF9A4A] text-[#FF9A4A] rounded hover:bg-[#FF9A4A] hover:text-[#0E1D34] transition-colors"
+            >
+              Send Another Message
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error && (
+              <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-2 rounded text-sm text-center">
+                {error}
+              </div>
+            )}
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1">
+                <label htmlFor="name" className="text-sm text-gray-300">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 rounded bg-[#0E1D34] border border-gray-700 focus:border-[#FF9A4A] focus:outline-none text-white transition-colors"
+                  placeholder="Your Name"
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label htmlFor="email" className="text-sm text-gray-300">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 rounded bg-[#0E1D34] border border-gray-700 focus:border-[#FF9A4A] focus:outline-none text-white transition-colors"
+                  placeholder="your@email.com"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label htmlFor="subject" className="text-sm text-gray-300">Subject (Optional)</label>
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
+                className="w-full px-4 py-2 rounded bg-[#0E1D34] border border-gray-700 focus:border-[#FF9A4A] focus:outline-none text-white transition-colors"
+                placeholder="Topic of discussion"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label htmlFor="message" className="text-sm text-gray-300">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+                rows="5"
+                className="w-full px-4 py-2 rounded bg-[#0E1D34] border border-gray-700 focus:border-[#FF9A4A] focus:outline-none text-white transition-colors resize-none"
+                placeholder="How can I help you?"
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 mt-4 rounded font-semibold text-[#0D1932] bg-[#FF9A4A] hover:bg-[#ff8f36] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? "Sending..." : "Send Message"}
+            </button>
+          </form>
+        )}
+      </motion.div>
+
       <section className="w-full max-w-xl text-center">
-        <h2 className="text-xl font-semibold mb-4">Social Media</h2>
+        <h2 className="text-xl font-semibold mb-4">Or Connect via Social Media</h2>
         <div className="flex flex-wrap justify-center gap-8">
 
           <motion.a
@@ -164,6 +299,27 @@ export default function Contact() {
             </svg>
             <span className="font-medium">Facebook</span>
             <span className="text-xs text-gray-300">Daniel Akanji</span>
+          </motion.a>
+
+          {/* Email */}
+          <motion.a
+            href="mailto:akanjidaniel03@gmail.com"
+            className="flex flex-col items-center gap-2 text-sm"
+            {...sectionAnimation}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            <svg
+              width="30"
+              height="30"
+              viewBox="0 0 24 24"
+              className="text-[#EA4335]"
+              fill="currentColor"
+            >
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+            </svg>
+            <span className="font-medium">Email</span>
+            <span className="text-xs text-gray-300">akanjidaniel03@gmail.com</span>
           </motion.a>
         </div>
       </section>

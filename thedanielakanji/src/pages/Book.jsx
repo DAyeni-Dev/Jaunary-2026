@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import emailjs from "@emailjs/browser";
+
 
 const sectionAnimation = {
   initial: { opacity: 0, y: 40 },
@@ -16,6 +16,7 @@ export default function Book() {
     category: "",
     categoryOther: "",
     service: "",
+    serviceOther: "",
     message: "",
   });
 
@@ -32,6 +33,7 @@ export default function Book() {
     formData.category.trim() &&
     (formData.category !== "Other" || formData.categoryOther.trim()) &&
     formData.service.trim() &&
+    (formData.service !== "Other" || formData.serviceOther.trim()) &&
     formData.message.trim();
 
   const handleChange = (e) => {
@@ -53,6 +55,8 @@ export default function Book() {
       newErrors.categoryOther = "Please specify your category";
     if (!formData.service.trim())
       newErrors.service = "Please select a service";
+    if (formData.service === "Other" && !formData.serviceOther.trim())
+      newErrors.serviceOther = "Please specify your service of interest";
     if (!formData.message.trim())
       newErrors.message = "Please provide a brief message";
 
@@ -60,32 +64,24 @@ export default function Book() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     setLoading(true);
 
-    emailjs
-      .send(
-        "service_2ld1mqk",
-        "template_0m9r2xv",
-        formData,
-        "d-yO8sfsteJA757u0"
-      )
-      .then(() =>
-        emailjs.send(
-          "service_2ld1mqk",
-          "template_n6l7nva",
-          {
-            name: formData.name,
-            email: formData.email,
-            service: formData.service,
-          },
-          "d-yO8sfsteJA757u0"
-        )
-      )
-      .then(() => {
+    try {
+      const response = await fetch("http://localhost:5000/api/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
         setSuccess(true);
         setFormData({
           name: "",
@@ -93,11 +89,20 @@ export default function Book() {
           category: "",
           categoryOther: "",
           service: "",
+          serviceOther: "",
           message: "",
         });
         setErrors({});
-      })
-      .finally(() => setLoading(false));
+      } else {
+        console.error("Submission error:", data.error);
+        alert(data.error || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      alert("Failed to connect to the server. Please ensure the backend is running.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -164,7 +169,7 @@ export default function Book() {
 
             <div className="w-full h-125 border rounded-lg overflow-hidden">
               <iframe
-                src="https://calendly.com/oluwadamilolaayeni321/30min"
+                src="https://calendly.com/akanjidaniel03"
                 width="100%"
                 height="100%"
                 frameBorder="0"
@@ -265,9 +270,34 @@ export default function Book() {
                     <option>Reputation Management</option>
                     <option>Crisis Communications</option>
                     <option>Media Relations</option>
+                    <option>Other</option>
                   </select>
+                  {errors.service && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.service}
+                    </p>
+                  )}
+                  {formData.service === "Other" && (
+                    <div className="mt-3">
+                      <label className="block text-sm font-medium mb-2">
+                        Please specify
+                      </label>
+                      <input
+                        type="text"
+                        name="serviceOther"
+                        value={formData.serviceOther}
+                        onChange={handleChange}
+                        className="w-full border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF9A4A]"
+                      />
+                      {errors.serviceOther && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.serviceOther}
+                        </p>
+                      )}
+                    </div>
+                  )}
                   <p className="text-xs text-gray-500 mt-1">
-                    Select the main area where you’d like communication support.
+                    Select the main area where you’d like PR/communication support.
                   </p>
                 </div>
 
