@@ -12,9 +12,27 @@ import {
   ContactIcon, 
   BookIcon, 
   MenuIcon, 
-  XIcon 
+  XIcon,
+  BriefcaseIcon,
+  SearchIcon
 } from '../components/Icons';
 import logo from '../assets/hero-bg.jpeg';
+
+const StatCard = ({ title, count, icon: Icon, color }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4"
+  >
+    <div className={`p-3 rounded-lg ${color} text-white`}>
+      <Icon />
+    </div>
+    <div>
+      <p className="text-gray-500 text-sm font-medium">{title}</p>
+      <h3 className="text-2xl font-bold text-gray-800">{count}</h3>
+    </div>
+  </motion.div>
+);
 
 const AdminDashboard = () => {
   const [bookings, setBookings] = useState([]);
@@ -22,7 +40,27 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+
+  const filteredBookings = bookings.filter(booking => 
+    booking.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    booking.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (booking.category === 'Other' ? booking.categoryOther : booking.category)?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (booking.service === 'Other' ? booking.serviceOther : booking.service)?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    booking.message?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredContacts = contacts.filter(contact => 
+    contact.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    contact.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    contact.subject?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    contact.message?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  useEffect(() => {
+    setSearchTerm('');
+  }, [activeTab]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,22 +111,6 @@ const AdminDashboard = () => {
       </div>
     );
   }
-
-  const StatCard = ({ title, count, icon: Icon, color }) => (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4"
-    >
-      <div className={`p-3 rounded-lg ${color} text-white`}>
-        <Icon />
-      </div>
-      <div>
-        <p className="text-gray-500 text-sm font-medium">{title}</p>
-        <h3 className="text-2xl font-bold text-gray-800">{count}</h3>
-      </div>
-    </motion.div>
-  );
 
   return (
     <div className="flex h-screen bg-gray-50 font-sans overflow-hidden">
@@ -159,6 +181,13 @@ const AdminDashboard = () => {
             >
               <AboutIcon />
               <span>About</span>
+            </button>
+            <button
+              onClick={() => navigate('/portfolio')}
+              className="w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-gray-300 hover:bg-white/10 transition-colors text-sm"
+            >
+              <BriefcaseIcon />
+              <span>Portfolio</span>
             </button>
             <button
               onClick={() => navigate('/contact')}
@@ -241,11 +270,11 @@ const AdminDashboard = () => {
                     <ul className="space-y-3">
                       {bookings.slice(0, 5).map((booking, idx) => (
                         <li key={idx} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                          <div>
-                            <p className="font-medium text-gray-800">{booking.name}</p>
-                            <p className="text-xs text-gray-500">{booking.email}</p>
+                          <div className="min-w-0 flex-1 mr-4">
+                            <p className="font-medium text-gray-800 truncate">{booking.name}</p>
+                            <p className="text-xs text-gray-500 truncate">{booking.email}</p>
                           </div>
-                          <span className="text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                          <span className="text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-1 rounded-full whitespace-nowrap">
                             {booking.serviceType || 'Service'}
                           </span>
                         </li>
@@ -266,12 +295,12 @@ const AdminDashboard = () => {
                     <ul className="space-y-3">
                       {contacts.slice(0, 5).map((contact, idx) => (
                         <li key={idx} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                          <div>
-                            <p className="font-medium text-gray-800">{contact.name}</p>
-                            <p className="text-xs text-gray-500 truncate max-w-[200px]">{contact.message}</p>
+                          <div className="min-w-0 flex-1 mr-4">
+                            <p className="font-medium text-gray-800 truncate">{contact.name}</p>
+                            <p className="text-xs text-gray-500 truncate">{contact.message || 'No message content'}</p>
                           </div>
-                          <span className="text-xs text-gray-400">
-                            {new Date().toLocaleDateString()}
+                          <span className="text-xs text-gray-400 whitespace-nowrap">
+                            {new Date(contact.createdAt || Date.now()).toLocaleDateString()}
                           </span>
                         </li>
                       ))}
@@ -283,6 +312,23 @@ const AdminDashboard = () => {
           )}
 
           {activeTab === 'bookings' && (
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <h3 className="text-xl font-bold text-gray-800">All Bookings</h3>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                    <SearchIcon />
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search bookings..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full md:w-64 pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF9A4A] focus:border-transparent"
+                  />
+                </div>
+              </div>
+
              <motion.div 
                initial={{ opacity: 0, y: 20 }}
                animate={{ opacity: 1, y: 0 }}
@@ -294,24 +340,28 @@ const AdminDashboard = () => {
                     <tr>
                       <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</th>
                       <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
-                      <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Phone</th>
+                      <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Enquiring As</th>
                       <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Service</th>
                       <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
                       <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Message</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
-                    {bookings.map((booking, index) => (
+                    {filteredBookings.map((booking, index) => (
                       <tr key={index} className="hover:bg-gray-50 transition-colors">
                         <td className="p-4 text-sm font-medium text-gray-900">{booking.name}</td>
                         <td className="p-4 text-sm text-gray-600">{booking.email}</td>
-                        <td className="p-4 text-sm text-gray-600">{booking.phone}</td>
+                        <td className="p-4 text-sm text-gray-600">
+                          {booking.category === 'Other' ? booking.categoryOther : booking.category}
+                        </td>
                         <td className="p-4 text-sm text-gray-600">
                           <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                            {booking.serviceType}
+                            {booking.service === 'Other' ? booking.serviceOther : booking.service}
                           </span>
                         </td>
-                        <td className="p-4 text-sm text-gray-600">{booking.date}</td>
+                        <td className="p-4 text-sm text-gray-600">
+                          {new Date(booking.createdAt).toLocaleDateString()}
+                        </td>
                         <td className="p-4 text-sm text-gray-600 max-w-xs truncate" title={booking.message}>
                           {booking.message}
                         </td>
@@ -319,14 +369,34 @@ const AdminDashboard = () => {
                     ))}
                   </tbody>
                 </table>
-                {bookings.length === 0 && (
-                  <div className="p-8 text-center text-gray-500">No bookings found.</div>
+                {filteredBookings.length === 0 && (
+                  <div className="p-8 text-center text-gray-500">
+                    {searchTerm ? 'No bookings found matching your search.' : 'No bookings found.'}
+                  </div>
                 )}
               </div>
             </motion.div>
+            </div>
           )}
 
           {activeTab === 'contacts' && (
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <h3 className="text-xl font-bold text-gray-800">All Messages</h3>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                    <SearchIcon />
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search messages..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full md:w-64 pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF9A4A] focus:border-transparent"
+                  />
+                </div>
+              </div>
+
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -343,7 +413,7 @@ const AdminDashboard = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
-                    {contacts.map((contact, index) => (
+                    {filteredContacts.map((contact, index) => (
                       <tr key={index} className="hover:bg-gray-50 transition-colors">
                         <td className="p-4 text-sm font-medium text-gray-900">{contact.name}</td>
                         <td className="p-4 text-sm text-gray-600">{contact.email}</td>
@@ -357,11 +427,14 @@ const AdminDashboard = () => {
                     ))}
                   </tbody>
                 </table>
-                 {contacts.length === 0 && (
-                  <div className="p-8 text-center text-gray-500">No messages found.</div>
+                 {filteredContacts.length === 0 && (
+                  <div className="p-8 text-center text-gray-500">
+                    {searchTerm ? 'No messages found matching your search.' : 'No messages found.'}
+                  </div>
                 )}
               </div>
             </motion.div>
+            </div>
           )}
         </main>
       </div>

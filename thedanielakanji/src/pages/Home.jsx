@@ -49,15 +49,14 @@ export default function Home() {
             className="text-4xl md:text-5xl font-bold max-w-3xl leading-tight"
             style={{ color: "#FF9A4A" }}
           >
-            Strategic Public Relations & Communications for Leaders Who Care About Reputation
+            Elevating Brands through Strategic Public Relations & Purposeful Communication
           </h1>
 
           <p
             className="mt-6 text-lg max-w-2xl"
             style={{ color: "#000000" }}
           >
-            Helping business owners, corporate professionals, and public figures
-            communicate with clarity and protect their brand image.
+            For business owners, public figures, and organizations demanding clarity, integrity, and impact. Led by Daniel Akanji, Founder of Insight & Influence Africa.
           </p>
 
           <div className="mt-10 flex flex-wrap gap-4">
@@ -94,7 +93,7 @@ export default function Home() {
               stakeholder engagement, and reputation management.
             </p>
             <p style={{ color: "#000000" }} className="leading-relaxed">
-              He works closely with business leaders and public personalities
+              He works closely with business owners and public personalities
               to craft narratives that inspire trust and authority.
             </p>
           </div>
@@ -126,27 +125,27 @@ export default function Home() {
             {[
               {
                 title: "Public Relations Strategy",
-                text: "Developing clear PR roadmaps that align your brand’s messaging with your business goals and public perception.",
+                text: "Custom-tailored communication blueprints that bridge the gap between your brand's vision and public perception.",
               },
               {
                 title: "Corporate Communications",
-                text: "Crafting internal and external communication frameworks that build trust, clarity, and consistency across stakeholders.",
+                text: "Building resilient communication frameworks that foster trust, clarity, and consistency with every stakeholder.",
               },
               {
                 title: "Event Consultation",
-                text: "Strategic advisory for corporate and public events to ensure strong messaging, brand alignment, and audience impact.",
+                text: "Expert oversight for high-stakes events, ensuring every detail amplifies your message and brand identity.",
               },
               {
                 title: "Reputation Management",
-                text: "Proactively managing how your brand is perceived while strengthening credibility and long-term public trust.",
+                text: "Proactive guardianship of your brand’s integrity, turning public sentiment into a long-term asset.",
               },
               {
                 title: "Crisis Communications",
-                text: "Guiding brands through sensitive situations with calm, structured communication that protects reputation and authority.",
+                text: "Calm, strategic guidance during critical moments to protect your narrative and restore confidence.",
               },
               {
                 title: "Media Relations",
-                text: "Building and managing relationships with the media to ensure accurate, strategic, and favorable brand coverage.",
+                text: "Leveraging deep media networks to secure meaningful coverage that tells your story accurately and effectively.",
               },
             ].map((service, index) => (
               <ServiceCard

@@ -29,6 +29,9 @@ function Footer() {
             <NavLink to="/about" className={footerLinkClass}>
               About
             </NavLink>
+            <NavLink to="/portfolio" className={footerLinkClass}>
+              Portfolio
+            </NavLink>
             <NavLink to="/contact" className={footerLinkClass}>
               Contact
             </NavLink>

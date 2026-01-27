@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-
+import emailjs from '@emailjs/browser';
 
 const sectionAnimation = {
   initial: { opacity: 0, y: 40 },
@@ -71,7 +71,8 @@ export default function Book() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/bookings", {
+      
+      await fetch("http://localhost:5000/api/bookings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,27 +80,47 @@ export default function Book() {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      
+      await emailjs.send(
+        "service_2ld1mqk",
+        "template_0m9r2xv",
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          category: formData.category === "Other" ? formData.categoryOther : formData.category,
+          service: formData.service === "Other" ? formData.serviceOther : formData.service,
+          message: formData.message,
+        },
+        "d-yO8sfsteJA757u0"
+      );
 
-      if (response.ok) {
-        setSuccess(true);
-        setFormData({
-          name: "",
-          email: "",
-          category: "",
-          categoryOther: "",
-          service: "",
-          serviceOther: "",
-          message: "",
-        });
-        setErrors({});
-      } else {
-        console.error("Submission error:", data.error);
-        alert(data.error || "Something went wrong. Please try again.");
-      }
+      
+      await emailjs.send(
+        "service_2ld1mqk",
+        "template_n6l7nva",
+        {
+          to_name: formData.name,
+          to_email: formData.email,
+          from_name: formData.name,
+          message: formData.message,
+        },
+        "d-yO8sfsteJA757u0"
+      );
+
+      setSuccess(true);
+      setFormData({
+        name: "",
+        email: "",
+        category: "",
+        categoryOther: "",
+        service: "",
+        serviceOther: "",
+        message: "",
+      });
+      setErrors({});
     } catch (error) {
-      console.error("Network error:", error);
-      alert("Failed to connect to the server. Please ensure the backend is running.");
+      console.error("EmailJS Error:", error);
+      alert("Failed to send booking request. Please try again later.");
     } finally {
       setLoading(false);
     }

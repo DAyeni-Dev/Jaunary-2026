@@ -4,6 +4,7 @@ import PublicLayout from "./components/PublicLayout";
 import About from "./pages/About";
 import Book from "./pages/Book";
 import Contact from "./pages/contacts";
+import Portfolio from "./pages/Portfolio";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -17,6 +18,7 @@ export default function App() {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/book" element={<Book />} />
           <Route path="/contact" element={<Contact />} />
         </Route>

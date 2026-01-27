@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
-import { HomeIcon, AboutIcon, ContactIcon, BookIcon, DashboardIcon, MenuIcon, XIcon } from "./Icons";
+import { HomeIcon, AboutIcon, ContactIcon, BookIcon, DashboardIcon, MenuIcon, XIcon, BriefcaseIcon } from "./Icons";
 import Footer from "./Footer";
 import logo from "../assets/hero-bg.jpeg";
 
@@ -53,6 +53,10 @@ export default function PublicLayout() {
           <NavLink to="/about" className={navLinkClass}>
             <AboutIcon />
             <span>About</span>
+          </NavLink>
+          <NavLink to="/portfolio" className={navLinkClass}>
+            <BriefcaseIcon />
+            <span>Portfolio</span>
           </NavLink>
           <NavLink to="/contact" className={navLinkClass}>
             <ContactIcon />

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import emailjs from '@emailjs/browser';
 
 const sectionAnimation = {
   initial: { opacity: 0, y: 40 },
@@ -29,7 +30,8 @@ export default function Contact() {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/contact", {
+      // Send to Backend (Optional: Keep for backup)
+      await fetch("http://localhost:5000/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,16 +39,38 @@ export default function Contact() {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      // Send Notification to Daniel
+      await emailjs.send(
+        "service_2ld1mqk",
+        "template_0m9r2xv",
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        },
+        "d-yO8sfsteJA757u0"
+      );
 
-      if (response.ok) {
-        setSuccess(true);
-        setFormData({ name: "", email: "", subject: "", message: "" });
-      } else {
-        setError(data.error || "Something went wrong. Please try again.");
-      }
+      // Send Auto-Response to Client
+      await emailjs.send(
+        "service_2ld1mqk",
+        "template_n6l7nva",
+        {
+          to_name: formData.name,
+          to_email: formData.email,
+          from_name: formData.name,
+          subject: formData.subject,
+          message: formData.message,
+        },
+        "d-yO8sfsteJA757u0"
+      );
+
+      setSuccess(true);
+      setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (err) {
-      setError("Failed to connect to the server. Please try again later.");
+      console.error("EmailJS Error:", err);
+      setError("Failed to send message. Please try again later.");
     } finally {
       setLoading(false);
     }

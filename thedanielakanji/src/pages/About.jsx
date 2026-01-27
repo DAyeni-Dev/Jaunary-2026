@@ -32,13 +32,13 @@ export default function About() {
                 About Daniel Akanji
               </h1>
               <p className="text-lg max-w-3xl" style={{ color: "#FFFFFF" }}>
-                A detail-oriented Public Relations and communications professional driven by excellence,
-                integrity, and purposeful impact.
+                Founder of Insight & Influence Africa. A strategic communicator and Public Relations expert dedicated to crafting narratives that resonate. 
+                Driven by excellence, integrity, and a commitment to purposeful impact.
               </p>
               <ul className="mt-4 space-y-2 text-lg" style={{ color: "#FFFFFF" }}>
-  <li>Experience across government, corporate, and media spaces</li>
-  <li>Focused on reputation, strategy, and storytelling</li>
-</ul>
+                <li>Experience across government, corporate, and media spaces</li>
+                <li>Focused on reputation, strategy, and storytelling</li>
+              </ul>
             </div>
           </motion.section>
         </div>
@@ -92,14 +92,14 @@ export default function About() {
             A Communicator Rooted in Excellence
           </h2>
          <p style={{ color: "#0E1D34" }} className="leading-relaxed mb-4">
-  Daniel Akanji is a passionate and highly detail-oriented Public
-  Relations and Communications professional. Known for his strong work
-  ethic and commitment to excellence, Daniel approaches every task
-  with intentionality, precision, and a deep sense of responsibility.
+  Daniel Akanji is more than a PR professional; he is a custodian of reputation.
+   With an unyielding commitment to precision and intentionality, Daniel partners with people from all works of life
+    and organizations to build trust, navigate complexity, and tell stories that matter.
 </p>
 <p style={{ color: "#0E1D34" }} className="leading-relaxed">
   His work is guided by the belief that communication should be clear,
-  strategic, and impactful.
+  strategic, and impactful. Whether managing a crisis or launching a brand, Daniel brings a calm,
+   analytical, and results-driven approach to every engagement.
 </p>
         </div>
       </motion.section>
@@ -128,6 +128,28 @@ export default function About() {
                 Supporting brands, organisation, individuals and institutions with thoughtful and value-driven communication.
               </p>
             </div>
+          </div>
+        </div>
+      </motion.section>
+
+      <motion.section {...sectionAnimation} className="py-20 bg-white">
+        <div className="max-w-5xl mx-auto px-8">
+          <h2 className="text-3xl font-semibold mb-6" style={{ color: "#FF9A4A" }}>
+            Founder, Insight & Influence Africa
+          </h2>
+          <div className="space-y-4" style={{ color: "#0E1D34" }}>
+            <p className="leading-relaxed text-lg font-medium">
+              Insight & Influence Africa is a Pan-African public relations and communications agency committed to building influence through strategic insight.
+            </p>
+            <p className="leading-relaxed">
+              We connect brands, individuals, and institutions to the power of perception, crafting messages that resonate and relationships that matter.
+            </p>
+            <p className="leading-relaxed">
+              With a strong foundation in networking and value creation, we deliver high-impact storytelling, media strategy, influencer engagement, and reputation management across sectors.
+            </p>
+            <p className="leading-relaxed">
+              Whether you’re a rising talent, a visionary brand, or a mission-driven organization, we position you for influence that lasts and insight that drives results.
+            </p>
           </div>
         </div>
       </motion.section>
@@ -305,6 +327,8 @@ export default function About() {
             </p>
         </div>
       </motion.section>
+
+
 
       <motion.section
         {...sectionAnimation}
