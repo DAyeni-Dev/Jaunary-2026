@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import emailjs from '@emailjs/browser';
+import { useFormSubmit } from "../hooks/useFormSubmit";
+import { validateName, validateEmail } from "../utils/validation";
 
 const sectionAnimation = {
   initial: { opacity: 0, y: 40 },
@@ -21,15 +22,12 @@ export default function Book() {
   });
 
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const { loading, success, submitForm } = useFormSubmit('/api/bookings');
 
   const isFormValid =
     formData.name.trim() &&
     formData.email.trim() &&
-    emailRegex.test(formData.email) &&
+    !validateEmail(formData.email) &&
     formData.category.trim() &&
     (formData.category !== "Other" || formData.categoryOther.trim()) &&
     formData.service.trim() &&
@@ -42,13 +40,13 @@ export default function Book() {
 
   const validateForm = () => {
     const newErrors = {};
+    
+    const nameError = validateName(formData.name);
+    if (nameError) newErrors.name = nameError;
 
-    if (!formData.name.trim()) newErrors.name = "Full name is required";
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = "Enter a valid email address";
-    }
+    const emailError = validateEmail(formData.email);
+    if (emailError) newErrors.email = emailError;
+
     if (!formData.category.trim())
       newErrors.category = "Please select a category";
     if (formData.category === "Other" && !formData.categoryOther.trim())
@@ -68,46 +66,30 @@ export default function Book() {
     e.preventDefault();
     if (!validateForm()) return;
 
-    setLoading(true);
+    const emailConfig = {
+      serviceId: "service_2ld1mqk",
+      publicKey: "d-yO8sfsteJA757u0",
+      adminTemplate: "template_0m9r2xv",
+      adminData: {
+        from_name: formData.name,
+        from_email: formData.email,
+        category: formData.category === "Other" ? formData.categoryOther : formData.category,
+        service: formData.service === "Other" ? formData.serviceOther : formData.service,
+        message: formData.message,
+      },
+      clientTemplate: "template_n6l7nva",
+      clientData: {
+        to_name: formData.name,
+        to_email: formData.email,
+        from_name: formData.name,
+        to_service: formData.service === "Other" ? formData.serviceOther : formData.service,
+        message: formData.message,
+      },
+    };
 
-    try {
-      
-      await fetch("http://localhost:5000/api/bookings", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+    const isSubmitted = await submitForm(formData, emailConfig);
 
-      
-      await emailjs.send(
-        "service_2ld1mqk",
-        "template_0m9r2xv",
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          category: formData.category === "Other" ? formData.categoryOther : formData.category,
-          service: formData.service === "Other" ? formData.serviceOther : formData.service,
-          message: formData.message,
-        },
-        "d-yO8sfsteJA757u0"
-      );
-
-      
-      await emailjs.send(
-        "service_2ld1mqk",
-        "template_n6l7nva",
-        {
-          to_name: formData.name,
-          to_email: formData.email,
-          from_name: formData.name,
-          message: formData.message,
-        },
-        "d-yO8sfsteJA757u0"
-      );
-
-      setSuccess(true);
+    if (isSubmitted) {
       setFormData({
         name: "",
         email: "",
@@ -118,11 +100,6 @@ export default function Book() {
         message: "",
       });
       setErrors({});
-    } catch (error) {
-      console.error("EmailJS Error:", error);
-      alert("Failed to send booking request. Please try again later.");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -206,9 +183,12 @@ export default function Book() {
         >
           {!success ? (
             <>
-              <h2 className="text-2xl font-semibold mb-6 text-[#FF9A4A]">
+              <h2 className="text-2xl font-semibold mb-2 text-[#FF9A4A]">
                 Request a Consultation
               </h2>
+              <p className="text-sm text-gray-500 mb-6 italic">
+                Note: All fields are required.
+              </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 {["name", "email"].map((field, i) => (

@@ -17,6 +17,8 @@ import {
   SearchIcon
 } from '../components/Icons';
 import logo from '../assets/hero-bg.jpeg';
+import userAvatar from '../assets/The-daniel-Akanji.jpeg';
+import API_URL from '../config';
 
 const StatCard = ({ title, count, icon: Icon, color }) => (
   <motion.div 
@@ -72,10 +74,10 @@ const AdminDashboard = () => {
 
       try {
         const [bookingsRes, contactsRes] = await Promise.all([
-          fetch('http://localhost:5000/api/bookings', {
+          fetch(`${API_URL}/api/bookings`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          fetch('http://localhost:5000/api/contacts', {
+          fetch(`${API_URL}/api/contacts`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -232,10 +234,12 @@ const AdminDashboard = () => {
             </h2>
           </div>
           <div className="flex items-center space-x-3">
-            <div className="h-8 w-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600">
-              <UserIcon />
-            </div>
-            <span className="hidden md:inline text-sm font-medium text-gray-600">Admin User</span>
+            <img 
+              src={userAvatar} 
+              alt="User Avatar" 
+              className="h-8 w-8 rounded-full object-cover border border-gray-200"
+            />
+            <span className="hidden md:inline text-sm font-medium text-gray-600">Daniel Akanjii</span>
           </div>
         </header>
 
@@ -275,7 +279,7 @@ const AdminDashboard = () => {
                             <p className="text-xs text-gray-500 truncate">{booking.email}</p>
                           </div>
                           <span className="text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-1 rounded-full whitespace-nowrap">
-                            {booking.serviceType || 'Service'}
+                            {new Date(booking.createdAt || Date.now()).toLocaleDateString()}
                           </span>
                         </li>
                       ))}
@@ -299,7 +303,7 @@ const AdminDashboard = () => {
                             <p className="font-medium text-gray-800 truncate">{contact.name}</p>
                             <p className="text-xs text-gray-500 truncate">{contact.message || 'No message content'}</p>
                           </div>
-                          <span className="text-xs text-gray-400 whitespace-nowrap">
+                          <span className="text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-1 rounded-full whitespace-nowrap">
                             {new Date(contact.createdAt || Date.now()).toLocaleDateString()}
                           </span>
                         </li>

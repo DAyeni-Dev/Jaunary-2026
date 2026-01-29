@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import emailjs from '@emailjs/browser';
+import { useFormSubmit } from "../hooks/useFormSubmit";
+import { validateName, validateEmail } from "../utils/validation";
 
 const sectionAnimation = {
   initial: { opacity: 0, y: 40 },
@@ -16,63 +17,56 @@ export default function Contact() {
     subject: "",
     message: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
+  
+  const [validationError, setValidationError] = useState("");
+  const { loading, success, error: submitError, submitForm, resetStatus } = useFormSubmit('/api/contact');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (validationError) setValidationError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
+    
+    const nameError = validateName(formData.name);
+    if (nameError) {
+      setValidationError(nameError);
+      return;
+    }
 
-    try {
-      // Send to Backend (Optional: Keep for backup)
-      await fetch("http://localhost:5000/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+    const emailError = validateEmail(formData.email);
+    if (emailError) {
+      setValidationError(emailError);
+      return;
+    }
 
-      // Send Notification to Daniel
-      await emailjs.send(
-        "service_2ld1mqk",
-        "template_0m9r2xv",
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-        },
-        "d-yO8sfsteJA757u0"
-      );
+    const emailConfig = {
+      serviceId: "service_2ld1mqk",
+      publicKey: "d-yO8sfsteJA757u0",
+      adminTemplate: "template_0m9r2xv",
+      adminData: {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+      },
+      clientTemplate: "template_n6l7nva",
+      clientData: {
+        to_name: formData.name,
+        to_email: formData.email,
+        from_name: formData.name,
+        subject: formData.subject,
+        to_service: formData.subject || "General Inquiry", // Fallback for template compatibility
+        message: formData.message,
+      },
+    };
 
-      // Send Auto-Response to Client
-      await emailjs.send(
-        "service_2ld1mqk",
-        "template_n6l7nva",
-        {
-          to_name: formData.name,
-          to_email: formData.email,
-          from_name: formData.name,
-          subject: formData.subject,
-          message: formData.message,
-        },
-        "d-yO8sfsteJA757u0"
-      );
+    const isSubmitted = await submitForm(formData, emailConfig);
 
-      setSuccess(true);
+    if (isSubmitted) {
       setFormData({ name: "", email: "", subject: "", message: "" });
-    } catch (err) {
-      console.error("EmailJS Error:", err);
-      setError("Failed to send message. Please try again later.");
-    } finally {
-      setLoading(false);
+      setValidationError("");
     }
   };
 
@@ -106,7 +100,7 @@ export default function Contact() {
             <h3 className="text-xl font-medium text-[#FF9A4A] mb-2">Message Sent!</h3>
             <p className="text-gray-300">Thank you for reaching out. We'll get back to you shortly.</p>
             <button 
-              onClick={() => setSuccess(false)}
+              onClick={resetStatus}
               className="mt-4 px-6 py-2 bg-transparent border border-[#FF9A4A] text-[#FF9A4A] rounded hover:bg-[#FF9A4A] hover:text-[#0E1D34] transition-colors"
             >
               Send Another Message
@@ -114,9 +108,9 @@ export default function Contact() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
+            {(validationError || submitError) && (
               <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-2 rounded text-sm text-center">
-                {error}
+                {validationError || submitError}
               </div>
             )}
             

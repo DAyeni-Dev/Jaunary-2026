@@ -1,13 +1,12 @@
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
-const nodemailer = require('nodemailer');
-require('dotenv').config();
 
-// Note: Mongoose is temporarily disabled because MongoDB is not installed.
-// const mongoose = require('mongoose');
-// const Booking = require('./models/Booking');
+const mongoose = require('mongoose');
+const Booking = require('./models/Booking');
+const Contact = require('./models/Contact');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -16,45 +15,67 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Database Connection (Temporary File-based)
-const DATA_FILE = path.join(__dirname, 'data', 'bookings.json');
-const CONTACTS_FILE = path.join(__dirname, 'data', 'contacts.json');
+// File System Paths
+const bookingsFile = path.join(__dirname, 'data', 'bookings.json');
+const contactsFile = path.join(__dirname, 'data', 'contacts.json');
 
-// Ensure data files exist
-[DATA_FILE, CONTACTS_FILE].forEach(file => {
-  if (!fs.existsSync(file)) {
-    if (!fs.existsSync(path.join(__dirname, 'data'))) {
-      fs.mkdirSync(path.join(__dirname, 'data'));
-    }
-    fs.writeFileSync(file, '[]');
-  }
-});
+// Ensure data directory exists
+if (!fs.existsSync(path.join(__dirname, 'data'))) {
+  fs.mkdirSync(path.join(__dirname, 'data'));
+}
 
-/* 
-// MongoDB Connection (Commented out until MongoDB is installed)
+// MongoDB Connection
+let dbConnected = false;
+
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connected successfully'))
-  .catch(err => console.error('MongoDB connection error:', err));
-*/
+  .then(() => {
+    console.log('MongoDB connected successfully');
+    dbConnected = true;
+  })
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    console.log('Falling back to File System storage...');
+    dbConnected = false;
+  });
 
-// Email Transporter Setup
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+// Validation Helper
+const validateName = (name) => {
+  const nameRegex = /^[A-Za-z\s]+$/;
+  if (!name || name.trim().length < 3) return 'Name must be at least 3 characters';
+  if (!nameRegex.test(name.trim())) return 'Name must contain only letters';
+  return null;
+};
+
+// Helper functions for File System operations
+const readData = (filePath) => {
+  if (!fs.existsSync(filePath)) return [];
+  try {
+    const data = fs.readFileSync(filePath, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error(`Error reading file ${filePath}:`, error);
+    return [];
   }
-});
+};
+
+const writeData = (filePath, data) => {
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+    return true;
+  } catch (error) {
+    console.error(`Error writing to file ${filePath}:`, error);
+    return false;
+  }
+};
 
 // Routes
 app.get('/', (req, res) => {
-  res.send('API is running (File System Mode)...');
+  res.send(`API is running (${dbConnected ? 'MongoDB' : 'File System'} Mode)...`);
 });
 
-// Simple Admin Authentication Middleware
+// Admin Authentication Middleware
 const authenticateAdmin = (req, res, next) => {
   const { authorization } = req.headers;
-  // In production, use environment variable for password: process.env.ADMIN_PASSWORD
   const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'DanielAkanji';
   
   if (authorization === `Bearer ${ADMIN_PASSWORD}`) {
@@ -78,30 +99,33 @@ app.post('/api/admin/login', (req, res) => {
 });
 
 // Get all bookings (Protected)
-app.get('/api/bookings', authenticateAdmin, (req, res) => {
+app.get('/api/bookings', authenticateAdmin, async (req, res) => {
   try {
-    if (fs.existsSync(DATA_FILE)) {
-      const fileData = fs.readFileSync(DATA_FILE, 'utf8');
-      res.json(JSON.parse(fileData));
+    if (dbConnected) {
+      const bookings = await Booking.find().sort({ createdAt: -1 });
+      res.json(bookings);
     } else {
-      res.json([]);
+      const bookings = readData(bookingsFile);
+      // Sort by createdAt desc if possible, or just reverse
+      res.json(bookings.reverse());
     }
   } catch (error) {
-    res.status(500).json({ error: 'Failed to read bookings' });
+    res.status(500).json({ error: 'Failed to fetch bookings' });
   }
 });
 
 // Get all contacts (Protected)
-app.get('/api/contacts', authenticateAdmin, (req, res) => {
+app.get('/api/contacts', authenticateAdmin, async (req, res) => {
   try {
-    if (fs.existsSync(CONTACTS_FILE)) {
-      const fileData = fs.readFileSync(CONTACTS_FILE, 'utf8');
-      res.json(JSON.parse(fileData));
+    if (dbConnected) {
+      const contacts = await Contact.find().sort({ createdAt: -1 });
+      res.json(contacts);
     } else {
-      res.json([]);
+      const contacts = readData(contactsFile);
+      res.json(contacts.reverse());
     }
   } catch (error) {
-    res.status(500).json({ error: 'Failed to read contacts' });
+    res.status(500).json({ error: 'Failed to fetch contacts' });
   }
 });
 
@@ -112,14 +136,16 @@ app.post('/api/bookings', async (req, res) => {
 
     console.log('Received booking data:', req.body);
 
-    // Basic server-side validation
     if (!name || !email || !category || !service || !message) {
-      console.log('Validation failed: Missing required fields');
       return res.status(400).json({ error: 'Please fill in all required fields' });
     }
 
-    const newBooking = {
-      id: Date.now().toString(),
+    const nameError = validateName(name);
+    if (nameError) {
+      return res.status(400).json({ error: nameError });
+    }
+
+    const bookingData = {
       name,
       email,
       category,
@@ -130,45 +156,19 @@ app.post('/api/bookings', async (req, res) => {
       createdAt: new Date()
     };
 
-    // Save to file
-    const fileData = fs.readFileSync(DATA_FILE, 'utf8');
-    const bookings = JSON.parse(fileData);
-    bookings.push(newBooking);
-    fs.writeFileSync(DATA_FILE, JSON.stringify(bookings, null, 2));
-
-    /*
-    // MongoDB Save (Commented out)
-    const newBookingModel = new Booking({ ... });
-    await newBookingModel.save();
-    */
-
-    console.log('Booking saved to file:', newBooking.id);
-
-    // Send email notification
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: 'akanjidaniel03@gmail.com',
-      subject: `New Booking Request from ${name}`,
-      html: `
-        <h2>New Booking Request</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Category:</strong> ${category} ${categoryOther ? `(${categoryOther})` : ''}</p>
-        <p><strong>Service:</strong> ${service} ${serviceOther ? `(${serviceOther})` : ''}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message}</p>
-      `
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log('Error sending email:', error);
-      } else {
-        console.log('Email sent:', info.response);
-      }
-    });
-
-    res.status(201).json({ message: 'Booking request received successfully', booking: newBooking });
+    if (dbConnected) {
+      const newBooking = new Booking(bookingData);
+      await newBooking.save();
+      console.log('Booking saved to database:', newBooking._id);
+      res.status(201).json({ message: 'Booking request received successfully', booking: newBooking });
+    } else {
+      const bookings = readData(bookingsFile);
+      const newBooking = { _id: Date.now().toString(), ...bookingData };
+      bookings.push(newBooking);
+      writeData(bookingsFile, bookings);
+      console.log('Booking saved to file:', newBooking._id);
+      res.status(201).json({ message: 'Booking request received successfully', booking: newBooking });
+    }
   } catch (error) {
     console.error('Error saving booking:', error);
     res.status(500).json({ error: 'Server error: ' + error.message });
@@ -182,13 +182,16 @@ app.post('/api/contact', async (req, res) => {
 
     console.log('Received contact message:', req.body);
 
-    // Basic validation
     if (!name || !email || !message) {
       return res.status(400).json({ error: 'Please fill in all required fields' });
     }
 
-    const newContact = {
-      id: Date.now().toString(),
+    const nameError = validateName(name);
+    if (nameError) {
+      return res.status(400).json({ error: nameError });
+    }
+
+    const contactData = {
       name,
       email,
       subject: subject || 'No Subject',
@@ -196,38 +199,19 @@ app.post('/api/contact', async (req, res) => {
       createdAt: new Date()
     };
 
-    // Save to file
-    const fileData = fs.readFileSync(CONTACTS_FILE, 'utf8');
-    const contacts = JSON.parse(fileData);
-    contacts.push(newContact);
-    fs.writeFileSync(CONTACTS_FILE, JSON.stringify(contacts, null, 2));
-
-    console.log('Contact message saved to file:', newContact.id);
-
-    // Send email notification
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: 'akanjidaniel03@gmail.com',
-      subject: `New Contact Message: ${subject || 'No Subject'}`,
-      html: `
-        <h2>New Contact Message</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Subject:</strong> ${subject || 'No Subject'}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message}</p>
-      `
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log('Error sending email:', error);
-      } else {
-        console.log('Email sent:', info.response);
-      }
-    });
-
-    res.status(201).json({ message: 'Message sent successfully', contact: newContact });
+    if (dbConnected) {
+      const newContact = new Contact(contactData);
+      await newContact.save();
+      console.log('Contact message saved to database:', newContact._id);
+      res.status(201).json({ message: 'Message sent successfully', contact: newContact });
+    } else {
+      const contacts = readData(contactsFile);
+      const newContact = { _id: Date.now().toString(), ...contactData };
+      contacts.push(newContact);
+      writeData(contactsFile, contacts);
+      console.log('Contact message saved to file:', newContact._id);
+      res.status(201).json({ message: 'Message sent successfully', contact: newContact });
+    }
   } catch (error) {
     console.error('Error saving contact message:', error);
     res.status(500).json({ error: 'Server error: ' + error.message });
