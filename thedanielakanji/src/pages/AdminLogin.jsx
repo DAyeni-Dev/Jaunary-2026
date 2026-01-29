@@ -28,7 +28,7 @@ const AdminLogin = () => {
         setError(data.error || 'Login failed');
       }
     } catch (err) {
-      setError('Network error. Please try again.');
+      setError(`Network error connecting to ${API_URL}. Please try again.`);
     }
   };
 
