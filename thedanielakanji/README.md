@@ -4,6 +4,8 @@ A professional portfolio and booking website built with the MERN stack (MongoDB,
 
 ## 🚀 Features
 
+- **Live Site**: [https://the-daniel-akanji.vercel.app/](https://the-daniel-akanji.vercel.app/)
+- **Backend API**: [https://the-daniel-akanji.onrender.com](https://the-daniel-akanji.onrender.com)
 - **Modern UI/UX**: Built with React and Tailwind CSS for a responsive and beautiful design.
 - **Portfolio Showcase**: Dynamic project gallery.
 - **Service Booking**: Integrated booking forms for various services.
@@ -93,7 +95,7 @@ Create a `.env` file in the `thedanielakanji/` (root) directory:
 ```env
 VITE_API_URL=http://localhost:5000
 ```
-*(Note: For production, this should point to your deployed backend URL)*
+
 
 Start the development server:
 ```bash
@@ -114,7 +116,7 @@ npm run dev
 1. Import project to Vercel.
 2. Set Root Directory to `thedanielakanji`.
 3. Add Environment Variable:
-   - `VITE_API_URL`: Your Render backend URL (e.g., `https://your-app.onrender.com`)
+   - `VITE_API_URL`: `https://the-daniel-akanji.onrender.com`
 4. Deploy!
 
 ## 🤝 Contributing
